@@ -1,0 +1,6 @@
+.header {
+	height: 50px;
+	background-color: aliceblue;
+	display: grid;
+	place-items: center;
+}
