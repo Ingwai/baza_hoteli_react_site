@@ -4,7 +4,7 @@ import Searchbar from './Searchbar.js/Searchbar';
 
 const Header = () => {
 	return (
-		<header className={styles.header}>
+		<header className={`${styles.header} container`}>
 			<Searchbar />
 		</header>
 	);
