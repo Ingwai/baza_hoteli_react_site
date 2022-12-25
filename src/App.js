@@ -13,3 +13,5 @@ function App() {
 }
 
 export default App;
+
+// instalacja sassa npm install node-sass
