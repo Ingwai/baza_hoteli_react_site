@@ -27,7 +27,7 @@ const Hotel = props => {
 							</div>
 							<div className='col'>
 								<h5>Ocena: {props.rating}</h5>
-								<a href='#hotel' className={`btn btn-${props.themeColor} mt-2 px-5 text-uppercase`}>
+								<a href='#hotel' className='btn btn-secondary mt-2 px-5 text-uppercase'>
 									Pokaż
 								</a>
 							</div>

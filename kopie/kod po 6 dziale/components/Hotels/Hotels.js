@@ -23,7 +23,7 @@ class Hotels extends Component {
 				{/* wstawianie zdjęć z katalogu public */}
 				{/* <img src={process.env.PUBLIC_URL + "/logo192.png"} alt="" /> */}
 				{this.props.hotels.map(hotel => (
-					<Hotel key={hotel.id} {...hotel} themeColor={this.props.themeColor} />
+					<Hotel key={hotel.id} {...hotel} />
 				))}
 			</div>
 		);
