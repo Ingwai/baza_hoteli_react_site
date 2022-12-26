@@ -1,15 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-const Searchbar = () => {
+const propTypes = {
+	onSearch: PropTypes.func.isRequired,
+};
+
+const Searchbar = props => {
+	const [term, setTerm] = useState('');
+
+	const search = () => {
+		props.onSearch(term);
+	};
+
+	const onKeyDownHandler = e => {
+		if (e.key === 'Enter') {
+			search();
+		}
+	};
+
 	return (
-		<div className='d-flex gap-3' >
-			<input 
-            // style={{ width: 'calc(100% - 20px)' }}
-            className='form-control' type='text' placeholder='Szukaj...' />
-			<button className='btn btn-primary'>Szukaj</button>
+		<div className='d-flex gap-3'>
+			<input
+				className='form-control'
+				value={term}
+				onKeyDown={onKeyDownHandler}
+				onChange={e => setTerm(e.target.value)}
+				type='text'
+				placeholder='Szukaj...'
+			/>
+			<button className='btn btn-primary' onClick={search}>
+				Szukaj
+			</button>
 		</div>
 	);
 };
+
+Searchbar.propTypes = propTypes;
 
 export default Searchbar;
 
