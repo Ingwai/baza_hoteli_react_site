@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import Header from './components/Header/Header';
 import Menu from './components/Menu/Menu';
 import Hotels from './components/Hotels/Hotels';
@@ -7,14 +7,17 @@ import Searchbar from './components/UI/LoadingIcon/Searchbar.js/Searchbar';
 import Layout from './components/layout/Layout';
 import Footer from './components/Footer/Footer';
 import Button from './components/UI/LoadingIcon/Button/Button';
+import ThemeContext from './context/themeContext';
 
-const hotelImg = '../../../assets/images/';
+import waw from './assets/images/waw.jpg';
+import kro from './assets/images/kro.jpg';
 
 class App extends Component {
 	// constructor(props) {
 	// 	super(props);
 	// gdy trzymam stan tylko można się pozbytć tych dwóch linijek powyższych i słowa this przed .state
 
+	static contextType = ThemeContext;
 	hotels = [
 		{
 			id: 1,
@@ -23,7 +26,7 @@ class App extends Component {
 			rating: 8.3,
 			description:
 				'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim magnam eum dolorem voluptatibus esse, odiplaceat cum! Et iure voluptatibus sit, praesentium cupiditate molestias explicabo repudiandae earum dicta	nam illo! Pariatur tempore exercitationem dolore rem, numquam tempora aperiam debitis, quae necessitatibus nihil veniam tenetur consectetur ab! Sapiente, minima ad illum deserunt quos incidunt quaerat. Perferendi qui aspernatur a sint ipsa.',
-			image: `${hotelImg}waw.jpg`,
+			image: { img: waw },
 		},
 
 		{
@@ -33,7 +36,7 @@ class App extends Component {
 			rating: 8.8,
 			description:
 				'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim magnam eum dolorem voluptatibus esse, odiplaceat cum! Et iure voluptatibus sit, praesentium cupiditate molestias explicabo repudiandae earum dicta	nam illo! Pariatur tempore exercitationem dolore rem, numquam tempora aperiam debitis, quae necessitatibus nihil veniam tenetur consectetur ab! Sapiente, minima ad illum deserunt quos incidunt quaerat. Perferendi qui aspernatur a sint ipsa.',
-			image: `${hotelImg}kro.jpg`,
+			image: { img: kro },
 		},
 	];
 	// this.state = {} na:
@@ -41,7 +44,7 @@ class App extends Component {
 		// hotels: this.hotels,
 		hotels: [],
 		loading: true,
-		themeColor: 'secondary',
+		themeColor: 'primary',
 	};
 
 	searchHandler = term => {
@@ -50,7 +53,7 @@ class App extends Component {
 	};
 
 	changeThemeColor = () => {
-		const newTheme = this.state.themeColor === 'primary' ? 'secondary' : 'primary';
+		const newTheme = this.state.themeColor === 'primary' ? 'warning' : 'primary';
 		this.setState({ themeColor: newTheme });
 	};
 
@@ -63,26 +66,25 @@ class App extends Component {
 	}
 
 	render() {
+		const header = (
+			<Header>
+				<Searchbar onSearch={term => this.searchHandler(term)} />
+				{/* lub */}
+				{/* <Searchbar onSearch={this.searchHandler} /> */}
+				<Button />
+			</Header>
+		);
+
+		const content = this.state.loading ? <LoadingIcon /> : <Hotels hotels={this.state.hotels} />;
+
+		const menu = <Menu />;
+
+		const footer = <Footer />;
+
 		return (
-			<Layout
-				header={
-					<Header>
-						<Searchbar onSearch={term => this.searchHandler(term)} themeColor={this.state.themeColor} />
-						{/* lub */}
-						{/* <Searchbar onSearch={this.searchHandler} /> */}
-						<Button onChange={this.changeThemeColor} />
-					</Header>
-				}
-				menu={<Menu themeColor={this.state.themeColor} />}
-				content={
-					this.state.loading ? (
-						<LoadingIcon themeColor={this.state.themeColor} />
-					) : (
-						<Hotels hotels={this.state.hotels} themeColor={this.state.themeColor} />
-					)
-				}
-				footer={<Footer themeColor={this.state.themeColor} />}
-			/>
+			<ThemeContext.Provider value={{ color: this.state.themeColor, changeTheme: this.changeThemeColor }}>
+				<Layout header={header} menu={menu} content={content} footer={footer} />
+			</ThemeContext.Provider>
 		);
 	}
 }
