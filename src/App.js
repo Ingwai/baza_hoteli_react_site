@@ -8,6 +8,7 @@ import Layout from './components/layout/Layout';
 import Footer from './components/Footer/Footer';
 import Button from './components/UI/LoadingIcon/Button/Button';
 import ThemeContext from './context/themeContext';
+import AuthContext from './context/authContext';
 
 import waw from './assets/images/waw.jpg';
 import kro from './assets/images/kro.jpg';
@@ -45,6 +46,7 @@ class App extends Component {
 		hotels: [],
 		loading: true,
 		themeColor: 'primary',
+		isAuthenticated: false,
 	};
 
 	searchHandler = term => {
@@ -62,7 +64,6 @@ class App extends Component {
 		setTimeout(() => {
 			this.setState({ hotels: this.hotels, loading: false });
 		}, 1000);
-		console.log('Zamontowany');
 	}
 
 	render() {
@@ -82,9 +83,16 @@ class App extends Component {
 		const footer = <Footer />;
 
 		return (
-			<ThemeContext.Provider value={{ color: this.state.themeColor, changeTheme: this.changeThemeColor }}>
-				<Layout header={header} menu={menu} content={content} footer={footer} />
-			</ThemeContext.Provider>
+			<AuthContext.Provider
+				value={{
+					isAuthenticated: this.state.isAuthenticated,
+					login: () => this.setState({isAuthenticated:true}),
+					logout: () => this.setState({isAuthenticated:false}),
+				}}>
+				<ThemeContext.Provider value={{ color: this.state.themeColor, changeTheme: this.changeThemeColor }}>
+					<Layout header={header} menu={menu} content={content} footer={footer} />
+				</ThemeContext.Provider>
+			</AuthContext.Provider>
 		);
 	}
 }

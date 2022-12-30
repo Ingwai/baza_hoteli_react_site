@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ThemeContext from '../../../../context/themeContext';
 
@@ -9,9 +9,11 @@ const propTypes = {
 const Searchbar = props => {
 	const [term, setTerm] = useState('');
 	const themeColor = useContext(ThemeContext);
+	const inputRef = useRef(); // ref to taki odpowiednik trochę addEventListener w Reakcie.
 
 	const search = () => {
 		props.onSearch(term);
+		setTerm('');
 	};
 
 	const onKeyDownHandler = e => {
@@ -20,9 +22,18 @@ const Searchbar = props => {
 		}
 	};
 
+	const focusInput = () => {
+		inputRef.current.focus(); //używając ref sprawdzamy przez current co jest aktualnie przypisane do ref (referencji)
+	};
+
+	useEffect(() => {
+		focusInput();
+	}, []); // useEffect zawiera 2 parametry: 1 to funkcja i to co ma się zrobić gdy komponent zostanie zamontowany lub odświeżony, a drugi parametr to tablica ze zmiennymi do śledzenia które mogą zostać odświeżone
+
 	return (
 		<div className='d-flex gap-3'>
 			<input
+				ref={inputRef}
 				className='form-control'
 				value={term}
 				onKeyDown={onKeyDownHandler}
