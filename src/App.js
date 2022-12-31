@@ -1,4 +1,5 @@
-import { useEffect, useReducer } from 'react';
+import {useEffect, useReducer } from 'react';
+// import { useCallback} from 'react';
 import Header from './components/Header/Header';
 import Menu from './components/Menu/Menu';
 import Hotels from './components/Hotels/Hotels';
@@ -9,9 +10,11 @@ import Footer from './components/Footer/Footer';
 import Button from './components/UI/LoadingIcon/Button/Button';
 import ThemeContext from './context/themeContext';
 import AuthContext from './context/authContext';
+import BestHotel from './components/Hotels/BestHotel/BestHotel';
 
 import waw from './assets/images/waw.jpg';
 import kro from './assets/images/kro.jpg';
+import InspiringQuote from './components/InspiringQuote/InspiringQuote';
 
 const hotelsArr = [
 	{
@@ -95,6 +98,25 @@ function App() {
 		dispatch({ type: 'set-hotels', hotels: newHotels });
 	};
 
+	const getBestHotel = () => {
+		if (state.hotels.length < 2) {
+			return null;
+		} else {
+			return state.hotels.sort((a, b) => (a.rating > b.rating ? -1 : 1))[0];
+		}
+	};
+
+	// const getBestHotel = useCallback(
+	// 	options => {
+	// 		if (state.hotels.length < options.minHotels) {
+	// 			return null;
+	// 		} else {
+	// 			return state.hotels.sort((a, b) => (a.rating > b.rating ? -1 : 1))[0];
+	// 		}
+	// 	},
+	// 	[state.hotels]
+	// );
+
 	useEffect(() => {
 		// tutaj powinno się odbywać ładowanie danych z backendu to taki odpowiednik componentDidMount()
 		dispatch({ type: 'set-hotels', hotels: hotelsArr });
@@ -103,15 +125,22 @@ function App() {
 
 	const header = (
 		<Header>
+			<InspiringQuote />
 			<Searchbar onSearch={term => searchHandler(term)} />
 			<Button />
 		</Header>
 	);
 
-	const content = state.loading ? <LoadingIcon /> : <Hotels hotels={state.hotels} />;
+	const content = state.loading ? (
+		<LoadingIcon />
+	) : (
+		<>
+			{getBestHotel() ? <BestHotel getHotel={getBestHotel} /> : null}
+			<Hotels hotels={state.hotels} />
+		</>
+	);
 
 	const menu = <Menu />;
-
 	const footer = <Footer />;
 
 	return (
