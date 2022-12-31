@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useEffect, useReducer } from 'react';
 import Header from './components/Header/Header';
 import Menu from './components/Menu/Menu';
 import Hotels from './components/Hotels/Hotels';
@@ -13,88 +13,123 @@ import AuthContext from './context/authContext';
 import waw from './assets/images/waw.jpg';
 import kro from './assets/images/kro.jpg';
 
-class App extends Component {
-	// constructor(props) {
-	// 	super(props);
-	// gdy trzymam stan tylko można się pozbytć tych dwóch linijek powyższych i słowa this przed .state
+const hotelsArr = [
+	{
+		id: 1,
+		name: 'Pod Akacjami',
+		city: 'Warszawa',
+		rating: 8.3,
+		description:
+			'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim magnam eum dolorem voluptatibus esse, odiplaceat cum! Et iure voluptatibus sit, praesentium cupiditate molestias explicabo repudiandae earum dicta	nam illo! Pariatur tempore exercitationem dolore rem, numquam tempora aperiam debitis, quae necessitatibus nihil veniam tenetur consectetur ab! Sapiente, minima ad illum deserunt quos incidunt quaerat. Perferendi qui aspernatur a sint ipsa.',
+		image: { img: waw },
+	},
 
-	static contextType = ThemeContext;
-	hotels = [
-		{
-			id: 1,
-			name: 'Pod Akacjami',
-			city: 'Warszawa',
-			rating: 8.3,
-			description:
-				'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim magnam eum dolorem voluptatibus esse, odiplaceat cum! Et iure voluptatibus sit, praesentium cupiditate molestias explicabo repudiandae earum dicta	nam illo! Pariatur tempore exercitationem dolore rem, numquam tempora aperiam debitis, quae necessitatibus nihil veniam tenetur consectetur ab! Sapiente, minima ad illum deserunt quos incidunt quaerat. Perferendi qui aspernatur a sint ipsa.',
-			image: { img: waw },
-		},
+	{
+		id: 2,
+		name: 'Pod dębami',
+		city: 'Krosno',
+		rating: 8.8,
+		description:
+			'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim magnam eum dolorem voluptatibus esse, odiplaceat cum! Et iure voluptatibus sit, praesentium cupiditate molestias explicabo repudiandae earum dicta	nam illo! Pariatur tempore exercitationem dolore rem, numquam tempora aperiam debitis, quae necessitatibus nihil veniam tenetur consectetur ab! Sapiente, minima ad illum deserunt quos incidunt quaerat. Perferendi qui aspernatur a sint ipsa.',
+		image: { img: kro },
+	},
+];
 
-		{
-			id: 2,
-			name: 'Pod dębami',
-			city: 'Krosno',
-			rating: 8.8,
-			description:
-				'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim magnam eum dolorem voluptatibus esse, odiplaceat cum! Et iure voluptatibus sit, praesentium cupiditate molestias explicabo repudiandae earum dicta	nam illo! Pariatur tempore exercitationem dolore rem, numquam tempora aperiam debitis, quae necessitatibus nihil veniam tenetur consectetur ab! Sapiente, minima ad illum deserunt quos incidunt quaerat. Perferendi qui aspernatur a sint ipsa.',
-			image: { img: kro },
-		},
-	];
-	// this.state = {} na:
-	state = {
-		// hotels: this.hotels,
-		hotels: [],
-		loading: true,
-		themeColor: 'primary',
-		isAuthenticated: false,
-	};
+const initialState = {
+	hotels: [],
+	loading: true,
+	theme: 'primary',
+	isAuthenticated: false,
+};
 
-	searchHandler = term => {
-		const hotels = [...this.hotels].filter(hotel => hotel.name.toLowerCase().includes(term.toLowerCase()));
-		this.setState({ hotels });
-	};
+// initState jest równy initialState ale w tej funkcji możemy zmienić np jakąś wartość zmiennej np theme na secondary
+const init = initState => {
+	// initState.theme = 'secondary';
+	return initState;
+};
 
-	changeThemeColor = () => {
-		const newTheme = this.state.themeColor === 'primary' ? 'warning' : 'primary';
-		this.setState({ themeColor: newTheme });
-	};
+// w tym przypadku funkcja init jest nie potrzebna w reducerze
 
-	componentDidMount() {
-		// tutaj powinno się odbywać ładowanie danych z backendu
-		setTimeout(() => {
-			this.setState({ hotels: this.hotels, loading: false });
-		}, 1000);
+const reducer = (state, action) => {
+	switch (action.type) {
+		case 'change-theme':
+			const theme = state.theme === 'primary' ? 'warning' : 'primary';
+			return {
+				...state,
+				theme: theme, //można pominąć jedno theme w tym zapisie
+			};
+		case 'set-hotels':
+			return {
+				...state,
+				hotels: action.hotels,
+			};
+		case 'set-loading':
+			return {
+				...state,
+				loading: action.loading,
+			};
+		case 'login':
+			return {
+				...state,
+				isAuthenticated: true,
+			};
+		case 'logout':
+			return {
+				...state,
+				isAuthenticated: false,
+			};
+		default:
+			throw new Error('Nie ma takiej akcji: ' + action.type);
 	}
+};
+// return state;
 
-	render() {
-		const header = (
-			<Header>
-				<Searchbar onSearch={term => this.searchHandler(term)} />
-				{/* lub */}
-				{/* <Searchbar onSearch={this.searchHandler} /> */}
-				<Button />
-			</Header>
-		);
+function App() {
+	// useReducer to zamiennik useState gdy mamy ich dużo, useReducer przyjmuje 3 parametry (funkcję obsługującą zmieniające się zmienne w zależności od stanu, stan inicjujący i opcjonalny 3 parametr funkcję inicjalizującą która nie występuje za często)
 
-		const content = this.state.loading ? <LoadingIcon /> : <Hotels hotels={this.state.hotels} />;
+	const [state, dispatch] = useReducer(reducer, initialState, init);
+	// state w parametrze funkcji w useReducer jest stanem aktualnym, a state po returnie to stan na który chcemy zmienić
 
-		const menu = <Menu />;
+	const searchHandler = term => {
+		const newHotels = [...hotelsArr].filter(hotel => hotel.name.toLowerCase().includes(term.toLowerCase()));
+		dispatch({ type: 'set-hotels', hotels: newHotels });
+	};
 
-		const footer = <Footer />;
+	useEffect(() => {
+		// tutaj powinno się odbywać ładowanie danych z backendu to taki odpowiednik componentDidMount()
+		dispatch({ type: 'set-hotels', hotels: hotelsArr });
+		dispatch({ type: 'set-loading', loading: false });
+	}, []);
 
-		return (
-			<AuthContext.Provider
+	const header = (
+		<Header>
+			<Searchbar onSearch={term => searchHandler(term)} />
+			<Button />
+		</Header>
+	);
+
+	const content = state.loading ? <LoadingIcon /> : <Hotels hotels={state.hotels} />;
+
+	const menu = <Menu />;
+
+	const footer = <Footer />;
+
+	return (
+		<AuthContext.Provider
+			value={{
+				isAuthenticated: state.isAuthenticated,
+				login: () => dispatch({ type: 'login' }),
+				logout: () => dispatch({ type: 'logout' }),
+			}}>
+			<ThemeContext.Provider
 				value={{
-					isAuthenticated: this.state.isAuthenticated,
-					login: () => this.setState({isAuthenticated:true}),
-					logout: () => this.setState({isAuthenticated:false}),
+					color: state.theme,
+					changeTheme: () => dispatch({ type: 'change-theme' }),
 				}}>
-				<ThemeContext.Provider value={{ color: this.state.themeColor, changeTheme: this.changeThemeColor }}>
-					<Layout header={header} menu={menu} content={content} footer={footer} />
-				</ThemeContext.Provider>
-			</AuthContext.Provider>
-		);
-	}
+				<Layout header={header} menu={menu} content={content} footer={footer} />
+			</ThemeContext.Provider>
+		</AuthContext.Provider>
+	);
 }
 
 export default App;
