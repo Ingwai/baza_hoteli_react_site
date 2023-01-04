@@ -3,6 +3,8 @@ import React from 'react';
 import styles from './Hotel.module.css';
 import ThemeContext from '../../../context/themeContext';
 import { useContext } from 'react';
+import useAuth from '../../../hooks/useAuth';
+
 const propTypes = {
 	name: PropTypes.string.isRequired,
 	city: PropTypes.string.isRequired,
@@ -13,6 +15,12 @@ const propTypes = {
 
 const Hotel = props => {
 	const themeColor = useContext(ThemeContext);
+	const [auth] = useAuth();
+
+	const openHotelHandler = e => {
+		e.preventDefault();
+		props.onOpen(props);
+	};
 
 	return (
 		<div className={`card ${styles.hotel}`}>
@@ -30,7 +38,10 @@ const Hotel = props => {
 							</div>
 							<div className='col'>
 								<h5>Ocena: {props.rating}</h5>
-								<a href='#hotel' className={`btn btn-${themeColor.color} mt-2 px-5 text-uppercase`}>
+								<a
+									href='#hotel'
+									onClick={openHotelHandler}
+									className={`btn btn-${themeColor.color} mt-2 px-5 text-uppercase`}>
 									Pokaż
 								</a>
 							</div>
@@ -38,6 +49,12 @@ const Hotel = props => {
 					</div>
 					<div className='col-12'>
 						<p className={styles.description}>{props.description}</p>
+
+						{auth ? (
+							<p className='mt-2'>Dostępność: 4 pokoje</p>
+						) : (
+							<p className='mt-2'>Żeby sprawdzić dostępność zaloguj się.</p>
+						)}
 					</div>
 				</div>
 			</div>

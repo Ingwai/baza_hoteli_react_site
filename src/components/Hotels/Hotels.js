@@ -35,7 +35,7 @@ const Hotels = props => {
 			{/* wstawianie zdjęć z katalogu public */}
 			{/* <img src={process.env.PUBLIC_URL + "/logo192.png"} alt="" /> */}
 			{props.hotels.map(hotel => (
-				<Hotel key={hotel.id} {...hotel} />
+				<Hotel onOpen={props.onOpen} key={hotel.id} {...hotel} />
 			))}
 		</div>
 	);

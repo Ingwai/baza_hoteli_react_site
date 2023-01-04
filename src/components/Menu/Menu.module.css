@@ -1,6 +1,6 @@
 .menuContainer {
 	border: 1px solid #cdcdcd;
-	margin: 10px 0;
+	margin: 20px 0;
 }
 
 .menu {
@@ -10,6 +10,7 @@
 	text-align: left;
 	display: flex;
 	justify-content: left;
+	align-items: center;
 }
 
 .menuItem {

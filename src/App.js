@@ -1,4 +1,4 @@
-import {useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 // import { useCallback} from 'react';
 import Header from './components/Header/Header';
 import Menu from './components/Menu/Menu';
@@ -15,6 +15,8 @@ import BestHotel from './components/Hotels/BestHotel/BestHotel';
 import waw from './assets/images/waw.jpg';
 import kro from './assets/images/kro.jpg';
 import InspiringQuote from './components/InspiringQuote/InspiringQuote';
+import LastHotel from './components/Hotels/LastHotel/LastHotel';
+import useStateStorage from './hooks/useStateStorage';
 
 const hotelsArr = [
 	{
@@ -93,6 +95,8 @@ function App() {
 	const [state, dispatch] = useReducer(reducer, initialState, init);
 	// state w parametrze funkcji w useReducer jest stanem aktualnym, a state po returnie to stan na który chcemy zmienić
 
+	const [lastHotel, setLastHotel] = useStateStorage('last-hotel', null);
+
 	const searchHandler = term => {
 		const newHotels = [...hotelsArr].filter(hotel => hotel.name.toLowerCase().includes(term.toLowerCase()));
 		dispatch({ type: 'set-hotels', hotels: newHotels });
@@ -106,6 +110,10 @@ function App() {
 		}
 	};
 
+	const openHotel = hotel => setLastHotel(hotel);
+	
+	const removeLastHotel = () => setLastHotel(null)
+	
 	// const getBestHotel = useCallback(
 	// 	options => {
 	// 		if (state.hotels.length < options.minHotels) {
@@ -135,8 +143,9 @@ function App() {
 		<LoadingIcon />
 	) : (
 		<>
+			{LastHotel ? <LastHotel {...lastHotel} onRemove={removeLastHotel} /> : null}
 			{getBestHotel() ? <BestHotel getHotel={getBestHotel} /> : null}
-			<Hotels hotels={state.hotels} />
+			<Hotels onOpen={openHotel} hotels={state.hotels} />
 		</>
 	);
 

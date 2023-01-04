@@ -23,6 +23,7 @@ const BestHotel = props => {
 		return () => {
 			clearInterval(interval);
 		};
+	//  eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []); // gdy jest pusta tablica to useEffect wykonuje się raz przy zamontowaniu komponentu
 
 	return (

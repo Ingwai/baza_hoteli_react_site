@@ -1,20 +1,20 @@
 import React, { useContext } from 'react';
 import styles from './Menu.module.css';
-import AuthContext from '../../context/authContext';
 import ThemeContext from '../../context/themeContext';
+import useAuth from '../../hooks/useAuth';
 
 const Menu = () => {
-	const auth = useContext(AuthContext);
+	const [auth, setAuth] = useAuth();
 	const themeColor = useContext(ThemeContext);
 
 	const login = e => {
 		e.preventDefault();
-		auth.login();
+		setAuth(true);
 	};
 
 	const logout = e => {
 		e.preventDefault();
-		auth.logout();
+		setAuth(false);
 	};
 
 	return (
@@ -25,7 +25,7 @@ const Menu = () => {
 						Home
 					</a>
 				</li>
-				{auth.isAuthenticated ? (
+				{auth ? (
 					<li className={styles.menuItem}>
 						<a href='#login' className={`text-${themeColor.color}`} onClick={logout}>
 							Wyloguj
