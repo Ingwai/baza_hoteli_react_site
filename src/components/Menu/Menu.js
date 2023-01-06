@@ -18,7 +18,7 @@ const Menu = () => {
 	};
 
 	return (
-		<div className={`${styles.menuContainer}`}>
+		<div className={`${styles.menuContainer} breadcrumb`}>
 			<ul className={styles.menu}>
 				<li className={styles.menuItem}>
 					<a href='#home' className={`text-${themeColor.color}`}>

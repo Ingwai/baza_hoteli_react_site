@@ -17,6 +17,7 @@ import kro from './assets/images/kro.jpg';
 import InspiringQuote from './components/InspiringQuote/InspiringQuote';
 import LastHotel from './components/Hotels/LastHotel/LastHotel';
 import useStateStorage from './hooks/useStateStorage';
+import useWebsiteTitle from './hooks/useWebsiteTittle';
 
 const hotelsArr = [
 	{
@@ -97,6 +98,8 @@ function App() {
 
 	const [lastHotel, setLastHotel] = useStateStorage('last-hotel', null);
 
+	useWebsiteTitle("Strona główna");
+
 	const searchHandler = term => {
 		const newHotels = [...hotelsArr].filter(hotel => hotel.name.toLowerCase().includes(term.toLowerCase()));
 		dispatch({ type: 'set-hotels', hotels: newHotels });
@@ -111,9 +114,9 @@ function App() {
 	};
 
 	const openHotel = hotel => setLastHotel(hotel);
-	
-	const removeLastHotel = () => setLastHotel(null)
-	
+
+	const removeLastHotel = () => setLastHotel(null);
+
 	// const getBestHotel = useCallback(
 	// 	options => {
 	// 		if (state.hotels.length < options.minHotels) {
@@ -143,12 +146,11 @@ function App() {
 		<LoadingIcon />
 	) : (
 		<>
-			{LastHotel ? <LastHotel {...lastHotel} onRemove={removeLastHotel} /> : null}
+			{lastHotel && <LastHotel {...lastHotel} onRemove={removeLastHotel} />}
 			{getBestHotel() ? <BestHotel getHotel={getBestHotel} /> : null}
 			<Hotels onOpen={openHotel} hotels={state.hotels} />
 		</>
 	);
-
 	const menu = <Menu />;
 	const footer = <Footer />;
 
