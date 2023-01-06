@@ -1,19 +1,15 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import ThemeContext from '../../../../context/themeContext';
-
-const propTypes = {
-	onSearch: PropTypes.func.isRequired,
-};
+import { useNavigate } from 'react-router-dom';
 
 const Searchbar = props => {
 	const [term, setTerm] = useState('');
 	const themeColor = useContext(ThemeContext);
 	const inputRef = useRef(); // ref to taki odpowiednik trochę addEventListener w Reakcie.
+	const history = useNavigate();
 
 	const search = () => {
-		props.onSearch(term);
-		setTerm('');
+		history(`/wyszukaj/${term}`);
 	};
 
 	const onKeyDownHandler = e => {
@@ -47,8 +43,6 @@ const Searchbar = props => {
 		</div>
 	);
 };
-
-Searchbar.propTypes = propTypes;
 
 export default Searchbar;
 

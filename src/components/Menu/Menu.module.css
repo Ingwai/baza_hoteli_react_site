@@ -1,5 +1,8 @@
 .menuContainer {
 	border: 1px solid #cdcdcd;
+	padding: 10px;
+	border-radius: 8px;
+	background-color: #eee;
 	margin: 20px 0;
 }
 
@@ -17,7 +20,6 @@
 	display: inline-block;
 	margin-right: 20px;
 }
-
 .menuItem a {
 	text-decoration: none;
 	font-weight: 500;
