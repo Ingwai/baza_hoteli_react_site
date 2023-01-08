@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styles from './Menu.module.css';
 import ThemeContext from '../../context/themeContext';
 import useAuth from '../../hooks/useAuth';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Menu = () => {
 	const [auth, setAuth] = useAuth();
@@ -27,8 +27,9 @@ const Menu = () => {
 				<li className={styles.menuItem}>
 					<NavLink
 						to='/'
-						style={({ isActive }) => (isActive ? activeStyle : undefined)}
+						style={({ isActive }) => (isActive ? { textDecoration: 'underline' } : undefined)}
 						className={`text-${themeColor.color}`}>
+					
 						Home
 					</NavLink>
 				</li>

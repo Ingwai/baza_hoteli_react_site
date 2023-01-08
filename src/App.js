@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { reducer, initialState, init } from './reducer';
 import { useReducer } from 'react';
 // import { useCallback} from 'react';
@@ -16,7 +16,10 @@ import Home from './pages/Home/Home';
 import Hotel from './pages/Hotel/Hotel';
 import Search from './pages/Search/Search';
 import Profile from './pages/Profile/Profile';
-
+import ProfileDetails from './pages/Profile/ProfileDetails/ProfileDetails';
+import MyHotels from './pages/Profile/MyHotels/MyHotels';
+import PageNotFound from './pages/NotFound/PageNotFound';
+import Login from './pages/Auth/Login/Login';
 function App() {
 	// useReducer to zamiennik useState gdy mamy ich dużo, useReducer przyjmuje 3 parametry (funkcję obsługującą zmieniające się zmienne w zależności od stanu, stan inicjujący i opcjonalny 3 parametr funkcję inicjalizującą która nie występuje za często)
 
@@ -35,9 +38,22 @@ function App() {
 		<div>
 			<Routes>
 				<Route path='/' element={<Home />}></Route>
-				<Route path='/wyszukaj/:term' element={<Search />}></Route>
-				<Route path='/profil' element={<Profile />}></Route>
+				<Route path='/wyszukaj' element={<Search />}>
+					<Route path=':term' element={<Search />} />
+					<Route path='' element={<Search />} />
+				</Route>
+
+				<Route path='/profil' element={state.isAuthenticated ? <Profile /> : <Navigate to='/zaloguj' />}>
+					{/* w Profile.js umieszczamy <Outlet/> żeby się odnosił do tego rodzica*/}
+					<Route path='' element={<ProfileDetails />} />
+					<Route path='hotele' element={<MyHotels />} />
+				</Route>
+
 				<Route path='/hotels/:id' element={<Hotel />}></Route>
+
+				<Route path='/zaloguj' element={<Login />}></Route>
+				<Route path='*' element={<PageNotFound />}></Route>
+				{/* nie istniejące strony */}
 			</Routes>
 		</div>
 	);
