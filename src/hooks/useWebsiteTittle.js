@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
 
 export default function useWebsiteTitle(title) {
+	const setTitle = newTitle => (document.title = newTitle);
+
 	useEffect(() => {
-		document.title = title;
+		title && setTitle(title);
 	}, [title]);
+
+	return setTitle;
 }

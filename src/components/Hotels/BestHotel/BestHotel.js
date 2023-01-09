@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 const BestHotel = props => {
 	const [time, setTime] = useState('');
@@ -23,7 +24,7 @@ const BestHotel = props => {
 		return () => {
 			clearInterval(interval);
 		};
-	//  eslint-disable-next-line react-hooks/exhaustive-deps
+		//  eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []); // gdy jest pusta tablica to useEffect wykonuje się raz przy zamontowaniu komponentu
 
 	return (
@@ -35,12 +36,9 @@ const BestHotel = props => {
 					<p>Ocena: {hotel.rating}</p>
 				</div>
 				<p>Do końca oferty pozostało: {time}</p>
-				<a
-					href='#a'
-					className='btn btn-sm btn-light
-                '>
+				<Link to={`/hotels/${hotel.id}`} className='btn btn-sm btn-light'>
 					Pokaż
-				</a>
+				</Link>
 			</div>
 		</div>
 	);
