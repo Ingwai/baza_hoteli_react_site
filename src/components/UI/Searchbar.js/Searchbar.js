@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import ThemeContext from '../../../../context/themeContext';
+import ThemeContext from '../../../context/themeContext';
 import { useNavigate } from 'react-router-dom';
 
 const Searchbar = props => {

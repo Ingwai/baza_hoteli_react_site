@@ -4,10 +4,10 @@ import { useReducer, lazy, Suspense } from 'react';
 // import { useCallback} from 'react';
 import Header from './components/Header/Header';
 import Menu from './components/Menu/Menu';
-import Searchbar from './components/UI/LoadingIcon/Searchbar.js/Searchbar';
+import Searchbar from './components/UI/Searchbar.js/Searchbar';
 import Layout from './components/layout/Layout';
 import Footer from './components/Footer/Footer';
-import Button from './components/UI/LoadingIcon/Button/Button';
+import Button from './components/UI/Button/Button';
 import ThemeContext from './context/themeContext';
 import AuthContext from './context/authContext';
 import ReducerContext from './context/reducerContext';
@@ -20,6 +20,7 @@ import MyHotels from './pages/Profile/MyHotels/MyHotels';
 import PageNotFound from './pages/NotFound/PageNotFound';
 import Login from './pages/Auth/Login/Login';
 import ErrorBoundary from './hoc/ErrorBoundary';
+import AddHotel from './pages/Profile/MyHotels/AddHotel/AddHotel';
 
 const Profile = lazy(() => import('./pages/Profile/Profile'));
 
@@ -54,6 +55,7 @@ function App() {
 							<Route path='hotele' element={<MyHotels />} />
 						</Route>
 
+							<Route path='/profil/hotele/dodaj' element={<AddHotel />}></Route>
 						<Route path='/hotels/:id' element={<Hotel />}></Route>
 
 						<Route path='/zaloguj' element={<Login />}></Route>
