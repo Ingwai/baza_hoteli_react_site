@@ -29,7 +29,6 @@ const Menu = () => {
 						to='/'
 						style={({ isActive }) => (isActive ? { textDecoration: 'underline' } : undefined)}
 						className={`text-${themeColor.color}`}>
-					
 						Home
 					</NavLink>
 				</li>
@@ -50,11 +49,22 @@ const Menu = () => {
 						</li>
 					</>
 				) : (
-					<li className={styles.menuItem}>
-						<a href='#login' className={`text-${themeColor.color}`} onClick={login}>
-							Zaloguj
-						</a>
-					</li>
+					<>
+						<li className={styles.menuItem}>
+							<NavLink
+								style={({ isActive }) => (isActive ? activeStyle : undefined)}
+								to='/rejestracja'
+								className={`text-${themeColor.color}`}>
+								Rejestracja
+							</NavLink>
+						</li>
+
+						<li className={styles.menuItem}>
+							<a href='#login' className={`text-${themeColor.color}`} onClick={login}>
+								Zaloguj
+							</a>
+						</li>
+					</>
 				)}
 			</ul>
 		</div>

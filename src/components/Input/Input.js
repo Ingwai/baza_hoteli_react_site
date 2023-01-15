@@ -58,7 +58,7 @@ const InputCheckbox = props => {
 						id={option.value}
 						value={option.value}
 						type='checkbox'
-						checked={props.value.find(el => el === option.values)}
+						checked={props.value.find(el => el === option.values || false)}
 						onChange={changeFeaturesHandler}
 					/>
 					<label className='custom-control-label ms-2' htmlFor={option.value}>
@@ -127,6 +127,10 @@ const Input = props => {
 	switch (props.type) {
 		case 'select':
 			return <InputSelect {...props} />;
+		case 'password':
+			return <InputText {...props} type='password' />;
+		case 'email':
+			return <InputText {...props} type='email' />;
 		case 'checkbox':
 			return <InputCheckbox {...props} />;
 		case 'textarea':

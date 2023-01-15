@@ -19,6 +19,7 @@ import ProfileDetails from './pages/Profile/ProfileDetails/ProfileDetails';
 import MyHotels from './pages/Profile/MyHotels/MyHotels';
 import PageNotFound from './pages/NotFound/PageNotFound';
 import Login from './pages/Auth/Login/Login';
+import Register from './pages/Auth/Register/Register';
 import ErrorBoundary from './hoc/ErrorBoundary';
 import AddHotel from './pages/Profile/MyHotels/AddHotel/AddHotel';
 
@@ -55,9 +56,10 @@ function App() {
 							<Route path='hotele' element={<MyHotels />} />
 						</Route>
 
-							<Route path='/profil/hotele/dodaj' element={<AddHotel />}></Route>
+						<Route path='/profil/hotele/dodaj' element={<AddHotel />}></Route>
 						<Route path='/hotels/:id' element={<Hotel />}></Route>
 
+						<Route path='/rejestracja' element={<Register />}></Route>
 						<Route path='/zaloguj' element={<Login />}></Route>
 						<Route path='*' element={<PageNotFound />}></Route>
 						{/* nie istniejące strony */}
