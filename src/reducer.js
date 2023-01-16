@@ -1,6 +1,6 @@
 export const initialState = {
 	theme: 'primary',
-	isAuthenticated: false,
+	user: JSON.parse(localStorage.getItem('token-data')) ?? null,
 };
 
 // initState jest równy initialState ale w tej funkcji możemy zmienić np jakąś wartość zmiennej np theme na secondary
@@ -22,12 +22,12 @@ export const reducer = (state, action) => {
 		case 'login':
 			return {
 				...state,
-				isAuthenticated: true,
+				user: action.user,
 			};
 		case 'logout':
 			return {
 				...state,
-				isAuthenticated: false,
+				user: null,
 			};
 		default:
 			throw new Error('Nie ma takiej akcji: ' + action.type);

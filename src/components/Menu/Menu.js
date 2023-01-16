@@ -8,17 +8,12 @@ const Menu = () => {
 	const [auth, setAuth] = useAuth();
 	const themeColor = useContext(ThemeContext);
 
-	const login = e => {
-		e.preventDefault();
-		setAuth(true);
-	};
-
-	const logout = e => {
-		e.preventDefault();
-		setAuth(false);
-	};
 	let activeStyle = {
 		textDecoration: 'underline',
+	};
+
+	const logout = () => {
+		setAuth(false);
 	};
 
 	return (
@@ -36,16 +31,20 @@ const Menu = () => {
 					<>
 						<li className={styles.menuItem}>
 							<NavLink
-								style={({ isActive }) => (isActive ? activeStyle : undefined)}
 								to='/profil'
+								style={({ isActive }) => (isActive ? activeStyle : undefined)}
 								className={`text-dark`}>
 								Mój profil
 							</NavLink>
 						</li>
 						<li className={styles.menuItem}>
-							<a href='#login' className={`text-${themeColor.color}`} onClick={logout}>
+							<NavLink
+								style={({ isActive }) => (isActive ? activeStyle : undefined)}
+								to='/zaloguj'
+								onClick={logout}
+								className={`text-${themeColor.color}`}>
 								Wyloguj
-							</a>
+							</NavLink>
 						</li>
 					</>
 				) : (
@@ -60,9 +59,12 @@ const Menu = () => {
 						</li>
 
 						<li className={styles.menuItem}>
-							<a href='#login' className={`text-${themeColor.color}`} onClick={login}>
+							<NavLink
+								style={({ isActive }) => (isActive ? activeStyle : undefined)}
+								to='/zaloguj'
+								className={`text-${themeColor.color}`}>
 								Zaloguj
-							</a>
+							</NavLink>
 						</li>
 					</>
 				)}

@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import LoadingButton from '../../../components/UI/LoadingButton/LoadingButton';
 import { validateEmail } from '../../../helpers/validations';
+import useAuth from '../../../hooks/useAuth';
 
 const ProfileDetails = props => {
-	const [email, setEmail] = useState('marek@wp.pl');
+	const [auth] = useAuth();
+	const [email, setEmail] = useState(auth.email);
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [errors, setErrors] = useState({ email: '', password: '' });

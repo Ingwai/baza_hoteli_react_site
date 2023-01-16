@@ -50,7 +50,7 @@ function App() {
 							<Route path=':term' element={<Search />} />
 							<Route path='' element={<Search />} />
 						</Route>
-						<Route path='/profil' element={state.isAuthenticated ? <Profile /> : <Navigate to='/zaloguj' />}>
+						<Route path='/profil' element={state.user ? <Profile /> : <Navigate to='/zaloguj' />}>
 							{/* w Profile.js umieszczamy <Outlet/> żeby się odnosił do tego rodzica */}
 							<Route path='' element={<ProfileDetails />} />
 							<Route path='hotele' element={<MyHotels />} />
@@ -75,8 +75,8 @@ function App() {
 		<Router>
 			<AuthContext.Provider
 				value={{
-					isAuthenticated: state.isAuthenticated,
-					login: () => dispatch({ type: 'login' }),
+					user: state.user,
+					login: user => dispatch({ type: 'login', user }),
 					logout: () => dispatch({ type: 'logout' }),
 				}}>
 				<ThemeContext.Provider

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import LoadingButton from '../../../components/UI/LoadingButton/LoadingButton';
 import { validate } from '../../../helpers/validations';
 import Input from '../../../components/Input/Input';
-// import axios from '../../../axios';
-import axiosLibrary from 'axios';
+import axios from '../../../axios-auth';
+// import axiosLibrary from 'axios';
 import { API_KEY } from '../../../key';
 import useAuth from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +18,8 @@ const Register = props => {
 		password: { value: '', error: '', showError: false, rules: ['required', { rule: 'min', length: 4 }] },
 	});
 
+	const [error, setError] = useState('');
+
 	const valid = !Object.values(form)
 		.map(input => input.error)
 		.filter(error => error).length;
@@ -29,14 +31,20 @@ const Register = props => {
 		setLoading(true);
 		try {
 			//axios.post wysyłanie
-			const res = await axiosLibrary.post(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`, {
+			const res = await axios.post(`accounts:signUp?key=${API_KEY}`, {
 				email: form.email.value,
 				password: form.password.value,
 				returnSecureToken: true,
 			});
-			setAuth(true, res.data);
+			setAuth({
+				email: res.data.email,
+				token: res.data.idToken,
+				userId: res.data.localId,
+			});
 			history('/');
 		} catch (ex) {
+			if (ex.response.data.error.message === 'EMAIL_EXISTS') setError('Taki e-mail już istnieje');
+			else setError(ex.response.data.error.message);
 			console.log(ex.response);
 		}
 
@@ -94,6 +102,7 @@ const Register = props => {
 						showError={form.password.showError}
 					/>
 
+					{error ? <div className='alert alert-danger'>{error}</div> : null}
 					<div className='text-end mt-3'>
 						<LoadingButton loading={loading} disabled={!valid || empty} className='btn btn-success'>
 							Gotowe!
