@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import LoadingIcon from '../../components/UI/LoadingIcon/LoadingIcon';
 import useWebsiteTitle from '../../hooks/useWebsiteTittle';
+import axios from '../../axios';
 
 const Hotel = props => {
 	const { id } = useParams();
@@ -11,24 +12,20 @@ const Hotel = props => {
 	const [loading, setLoading] = useState(true);
 	const setTitle = useWebsiteTitle();
 
-	const fetchHotel = () => {
-		setHotel({
-			id: 2,
-			name: 'Pod dębami',
-			city: 'Krosno',
-			rating: 8.8,
-			description:
-				'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim magnam eum dolorem voluptatibus esse, odiplaceat cum! Et iure voluptatibus sit, praesentium cupiditate molestias explicabo repudiandae earum dicta	nam illo! Pariatur tempore exercitationem dolore rem, numquam tempora aperiam debitis, quae necessitatibus nihil veniam tenetur consectetur ab! Sapiente, minima ad illum deserunt quos incidunt quaerat. Perferendi qui aspernatur a sint ipsa.',
-			image: { img: props.kro },
-		});
-		setTitle('Hotel Dębowy');
+	const fetchHotel = async () => {
+		try {
+			const res = await axios.get(`/hotels/${id}.json`);
+			setHotel(res.data);
+			setTitle(`Hotel - ${res.data.name}`);
+		} catch (ex) {
+			console.log(ex.response);
+		}
 		setLoading(false);
 	};
 
 	useEffect(() => {
-		setTimeout(() => {
-			fetchHotel();
-		}, 500);
+		fetchHotel();
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

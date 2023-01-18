@@ -4,31 +4,9 @@ import useWebsiteTitle from '../../hooks/useWebsiteTittle';
 import LastHotel from '../../components/Hotels/LastHotel/LastHotel';
 import BestHotel from '../../components/Hotels/BestHotel/BestHotel';
 import Hotels from '../../components/Hotels/Hotels';
-import waw from '../../assets/images/waw.jpg';
-import kro from '../../assets/images/kro.jpg';
 import LoadingIcon from '../../components/UI/LoadingIcon/LoadingIcon';
-
-export const hotelsArr = [
-	{
-		id: 1,
-		name: 'Pod Akacjami',
-		city: 'Warszawa',
-		rating: 8.3,
-		description:
-			'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim magnam eum dolorem voluptatibus esse, odiplaceat cum! Et iure voluptatibus sit, praesentium cupiditate molestias explicabo repudiandae earum dicta	nam illo! Pariatur tempore exercitationem dolore rem, numquam tempora aperiam debitis, quae necessitatibus nihil veniam tenetur consectetur ab! Sapiente, minima ad illum deserunt quos incidunt quaerat. Perferendi qui aspernatur a sint ipsa.',
-		image: { img: waw },
-	},
-
-	{
-		id: 2,
-		name: 'Pod dębami',
-		city: 'Krosno',
-		rating: 8.8,
-		description:
-			'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim magnam eum dolorem voluptatibus esse, odiplaceat cum! Et iure voluptatibus sit, praesentium cupiditate molestias explicabo repudiandae earum dicta	nam illo! Pariatur tempore exercitationem dolore rem, numquam tempora aperiam debitis, quae necessitatibus nihil veniam tenetur consectetur ab! Sapiente, minima ad illum deserunt quos incidunt quaerat. Perferendi qui aspernatur a sint ipsa.',
-		image: { img: kro },
-	},
-];
+import axios from '../../axios';
+import { objectToArrayWithId } from '../../helpers/objects';
 
 export default function Home(props) {
 	const [lastHotel, setLastHotel] = useStateStorage('last-hotel', null);
@@ -37,12 +15,22 @@ export default function Home(props) {
 
 	useWebsiteTitle('Strona główna');
 
+	const fetchHotels = async () => {
+		try {
+			const res = await axios.get('/hotels.json');
+			const newHotel = objectToArrayWithId(res.data).filter(hotel => hotel.status === 1);
+			setHotels(newHotel);
+		} catch (ex) {
+			console.log(ex.response);
+		}
+		setLoading(false);
+	};
+
 	useEffect(() => {
 		// tutaj powinno się odbywać ładowanie danych z backendu to taki odpowiednik componentDidMount()
-		setTimeout(() => {
-			setHotels(hotelsArr);
-			setLoading(false);
-		}, 500);
+
+		fetchHotels();
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

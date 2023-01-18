@@ -5,7 +5,8 @@ import ThemeContext from '../../../context/themeContext';
 import { useContext } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { Link } from 'react-router-dom';
-
+// import waw from '../../assets/images/waw.jpg';
+import kro from '../../../assets/images/kro.jpg';
 const propTypes = {
 	name: PropTypes.string.isRequired,
 	city: PropTypes.string.isRequired,
@@ -20,7 +21,9 @@ const Hotel = props => {
 
 	const openHotelHandler = e => {
 		// e.preventDefault();
-		props.onOpen(props);
+		if (props.onOpen) {
+			props.onOpen(props);
+		}
 	};
 
 	return (
@@ -29,7 +32,7 @@ const Hotel = props => {
 				<div className='row'>
 					<div className='col-4'>
 						{/* {props.missing} */}
-						<img src={props.image.img} alt='hotel' className='img-fluid img-thumbnail' />
+						<img src={kro} alt='hotel' className='img-fluid img-thumbnail' />
 					</div>
 					<div className='col-8'>
 						<div className='row'>
@@ -38,7 +41,7 @@ const Hotel = props => {
 								<span className='badge text-bg-light'>{props.city}</span>
 							</div>
 							<div className='col'>
-								<h5>Ocena: {props.rating}</h5>
+								<h5>Ocena: {props.rating ?? 0}</h5>
 								<Link
 									to={`/hotels/${props.id}`}
 									onClick={openHotelHandler}
@@ -58,7 +61,7 @@ const Hotel = props => {
 						<p className={styles.description}>{props.description}</p>
 
 						{auth ? (
-							<p className='mt-2'>Dostępność: 4 pokoje</p>
+							<p className='mt-2'>Dostępność: {props.rooms} pokoje</p>
 						) : (
 							<p className='mt-2'>Żeby sprawdzić dostępność zaloguj się.</p>
 						)}

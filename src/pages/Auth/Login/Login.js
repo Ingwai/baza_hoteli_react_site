@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import LoadingButton from '../../../components/UI/LoadingButton/LoadingButton';
 import axios from '../../../axios-auth';
 // import axiosLibrary from 'axios';
-import { API_KEY } from '../../../key';
 
 const Login = props => {
 	const [auth, setAuth] = useAuth();
@@ -21,7 +20,7 @@ const Login = props => {
 		setLoading(true);
 
 		try {
-			const res = await axios.post(`accounts:signInWithPassword?key=${API_KEY}`, {
+			const res = await axios.post(`accounts:signInWithPassword`, {
 				email,
 				password,
 				returnSecureToken: true,
@@ -31,7 +30,7 @@ const Login = props => {
 				token: res.data.idToken,
 				userId: res.data.localId,
 			});
-			
+			console.log(res);
 			navigate('/');
 		} catch (ex) {
 			setError('Niepoprawny email lub  hasło!');

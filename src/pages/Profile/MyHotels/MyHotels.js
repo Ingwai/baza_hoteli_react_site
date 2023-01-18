@@ -1,14 +1,71 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-const MyHotels = props => {
+import axios from '../../../axios';
+import { objectToArrayWithId } from '../../../helpers/objects';
+import useAuth from '../../../hooks/useAuth';
 
-	// zamiast const {url} = useRouteMatch stosujemy to co poniżej v ver 6 react-router
-	
-	const {pathname} = useLocation()
+const MyHotels = props => {
+	// zamiast const {url} = useRouteMatch stosujemy to co poniżej w ver 6 react-router
+	const { pathname } = useLocation();
+	// /---------------------------------------/
+	const [hotels, setHotels] = useState([]);
+	const [auth] = useAuth();
+
+	const fetchHotels = async () => {
+		try {
+			const res = await axios.get('/hotels.json');
+			const newHotel = objectToArrayWithId(res.data).filter(hotel => hotel.user_id === auth.userId);
+			setHotels(newHotel);
+		} catch (ex) {
+			console.log(ex.response);
+		}
+	};
+
+	const deleteHandler = async id => {
+		try {
+			await axios.delete(`hotels/${id}.json`);
+			setHotels(hotels.filter(hotel => hotel.id !== id));
+		} catch (ex) {
+			console.log(ex.response);
+		}
+	};
+
+	useEffect(() => {
+		fetchHotels();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	return (
 		<div>
-			<p>Nie masz jeszcze żadnego hotelu</p>
-			<Link to={`${pathname}/dodaj`} className='btn btn-primary'>Dodaj hotel</Link>
+			{hotels ? (
+				<table className='table'>
+					<thead>
+						<tr>
+							<th>Nazwa</th>
+							<th>Opcje</th>
+						</tr>
+					</thead>
+					<tbody>
+						{hotels.map(hotel => (
+							<tr key={hotel.id}>
+								<td>{hotel.name}</td>
+								<td>
+									<button className=' btn btn-warning'>Edytuj</button>
+									<button className=' btn btn-danger ms-2' onClick={() => deleteHandler(hotel.id)}>
+										Usuń
+									</button>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			) : (
+				<p>Nie masz jeszcze żadnego hotelu</p>
+			)}
+
+			<Link to={`${pathname}/dodaj`} className='btn btn-primary'>
+				Dodaj hotel
+			</Link>
 		</div>
 	);
 };

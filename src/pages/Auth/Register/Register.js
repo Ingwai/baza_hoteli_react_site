@@ -4,7 +4,6 @@ import { validate } from '../../../helpers/validations';
 import Input from '../../../components/Input/Input';
 import axios from '../../../axios-auth';
 // import axiosLibrary from 'axios';
-import { API_KEY } from '../../../key';
 import useAuth from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,7 +30,7 @@ const Register = props => {
 		setLoading(true);
 		try {
 			//axios.post wysyłanie
-			const res = await axios.post(`accounts:signUp?key=${API_KEY}`, {
+			const res = await axios.post(`accounts:signUp`, {
 				email: form.email.value,
 				password: form.password.value,
 				returnSecureToken: true,
