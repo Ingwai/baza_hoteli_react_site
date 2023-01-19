@@ -15,11 +15,15 @@ export default function Home(props) {
 
 	useWebsiteTitle('Strona główna');
 
+	const openHotel = hotel => setLastHotel(hotel);
+	const removeLastHotel = () => setLastHotel(null);
+
 	const fetchHotels = async () => {
 		try {
 			const res = await axios.get('/hotels.json');
-			const newHotel = objectToArrayWithId(res.data).filter(hotel => hotel.status === 1);
-			setHotels(newHotel);
+			// eslint-disable-next-line eqeqeq
+			const newHotels = objectToArrayWithId(res.data).filter(hotel => hotel.status == 1);
+			setHotels(newHotels);
 		} catch (ex) {
 			console.log(ex.response);
 		}
@@ -41,9 +45,6 @@ export default function Home(props) {
 			return hotels.sort((a, b) => (a.rating > b.rating ? -1 : 1))[0];
 		}
 	};
-
-	const openHotel = hotel => setLastHotel(hotel);
-	const removeLastHotel = () => setLastHotel(null);
 
 	return loading ? (
 		<LoadingIcon />

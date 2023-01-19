@@ -6,11 +6,11 @@ import { useContext } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { Link } from 'react-router-dom';
 // import waw from '../../assets/images/waw.jpg';
-import kro from '../../../assets/images/kro.jpg';
+// import kro from '../../../assets/images/kro.jpg';
 const propTypes = {
 	name: PropTypes.string.isRequired,
 	city: PropTypes.string.isRequired,
-	rating: PropTypes.number.isRequired,
+	rating: PropTypes.number,
 	description: PropTypes.string.isRequired,
 	// missing: PropTypes.string.isRequired,
 };
@@ -32,7 +32,11 @@ const Hotel = props => {
 				<div className='row'>
 					<div className='col-4'>
 						{/* {props.missing} */}
-						<img src={kro} alt='hotel' className='img-fluid img-thumbnail' />
+						<img
+							src={`https://placeimg.com/220/18${Math.floor(Math.random() * 10)}/arch`}
+							alt='hotel'
+							className='img-fluid img-thumbnail'
+						/>
 					</div>
 					<div className='col-8'>
 						<div className='row'>

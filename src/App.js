@@ -22,6 +22,7 @@ import Login from './pages/Auth/Login/Login';
 import Register from './pages/Auth/Register/Register';
 import ErrorBoundary from './hoc/ErrorBoundary';
 import AddHotel from './pages/Profile/MyHotels/AddHotel/AddHotel';
+import EditHotel from './pages/Profile/MyHotels/EditHotel/EditHotel';
 
 const Profile = lazy(() => import('./pages/Profile/Profile'));
 
@@ -57,6 +58,7 @@ function App() {
 						</Route>
 
 						<Route path='/profil/hotele/dodaj' element={<AddHotel />}></Route>
+						<Route path='/profil/hotele/edytuj/:id' element={<EditHotel />}></Route>
 						<Route path='/hotels/:id' element={<Hotel />}></Route>
 
 						<Route path='/rejestracja' element={<Register />}></Route>

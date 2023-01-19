@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from '../../../axios';
@@ -23,7 +24,7 @@ const MyHotels = props => {
 
 	const deleteHandler = async id => {
 		try {
-			await axios.delete(`hotels/${id}.json`);
+			await axios.delete(`hotels/${id}.json?auth=${auth.token}`);
 			setHotels(hotels.filter(hotel => hotel.id !== id));
 		} catch (ex) {
 			console.log(ex.response);
@@ -42,6 +43,7 @@ const MyHotels = props => {
 					<thead>
 						<tr>
 							<th>Nazwa</th>
+							<th>Status</th>
 							<th>Opcje</th>
 						</tr>
 					</thead>
@@ -50,7 +52,16 @@ const MyHotels = props => {
 							<tr key={hotel.id}>
 								<td>{hotel.name}</td>
 								<td>
-									<button className=' btn btn-warning'>Edytuj</button>
+									{hotel.status == 1 ? (
+										<span className='badge bg-success'>aktywny</span>
+									) : (
+										<span className='badge bg-secondary'>ukryty</span>
+									)}
+								</td>
+								<td>
+									<Link to={`/profil/hotele/edytuj/${hotel.id}`} className=' btn btn-warning'>
+										Edytuj
+									</Link>
 									<button className=' btn btn-danger ms-2' onClick={() => deleteHandler(hotel.id)}>
 										Usuń
 									</button>
