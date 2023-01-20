@@ -50,8 +50,8 @@ const Login = props => {
 
 			<form onSubmit={submit}>
 				<div className='form-group'>
-					<label>Email</label>
-					<input type='email' className='form-control' value={email} onChange={e => setEmail(e.target.value)} />
+					<label htmlFor='email-input'>Email</label>
+					<input id="email-input" type='email' className='form-control' value={email} onChange={e => setEmail(e.target.value)} />
 				</div>
 				<div className='form-group mt-2'>
 					<label>Hasło</label>
