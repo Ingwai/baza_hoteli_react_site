@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
@@ -7,14 +7,15 @@ const BestHotel = props => {
 
 	const hotel = props.getHotel();
 	const endTime = moment().add(30, 'minutes').add(0, 'seconds');
-	// const hotel = props.getHotel({ minHotels: 2 });
+	let interval = useRef(null)
+		// const hotel = props.getHotel({ minHotels: 2 });
 
 	// żeby odliczać czas zarządzać czasem i go formatować można zainstalować biblioteke
 	// npm i moment
 
 	// useEffect odpowiada componentDidMount() przy pustej tablicy lub componentDidUpdate() gdy coś jest w tablicy
 	useEffect(() => {
-		let interval = setInterval(() => {
+		 interval.current = setInterval(() => {
 			const leftTime = -moment().diff(endTime) / 1000;
 			const minutes = Math.floor(leftTime / 60);
 			const seconds = Math.floor(leftTime % 60);
@@ -22,9 +23,10 @@ const BestHotel = props => {
 		}, 1000);
 		//gdy useEffect coś zwraca to tak jakbyśmy stosowali componentWillUnmount()
 		return () => {
-			clearInterval(interval);
+			clearInterval(interval.current);
 		};
-		//  eslint-disable-next-line react-hooks/exhaustive-deps
+		
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []); // gdy jest pusta tablica to useEffect wykonuje się raz przy zamontowaniu komponentu
 
 	return (

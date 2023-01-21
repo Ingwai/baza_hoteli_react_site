@@ -34,7 +34,8 @@ const MyHotels = props => {
 	useEffect(() => {
 		fetchHotels();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, []); 
+	//jeśli tu umieszczamy funkcję to musimy zrobić z niej useCallback
 
 	return (
 		<div>
@@ -52,7 +53,7 @@ const MyHotels = props => {
 							<tr key={hotel.id}>
 								<td>{hotel.name}</td>
 								<td>
-									{hotel.status == 1 ? (
+									{parseInt(hotel.status) === 1 ? (
 										<span className='badge bg-success'>aktywny</span>
 									) : (
 										<span className='badge bg-secondary'>ukryty</span>
